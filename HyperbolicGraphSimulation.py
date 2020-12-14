@@ -12,6 +12,7 @@ class HyperBolicGraphSimulation:
         self.v = average_degrees
         self.a = negative_curvature
         self.uniformSampler = Distribution(stats.uniform())
+        #self.uniformSampler = stats.uniform()
 
     def generateGraph(self, n):
         self.R = 2*np.log(n/self.v)
@@ -36,7 +37,7 @@ class HyperBolicGraphSimulation:
     def samplePoints(self, size):
         self.pointsPositions = {}
         for i in range(size):
-            self.pointsPositions[i] = (self.sampleRadius(), self.sampleRadius())
+            self.pointsPositions[i] = (self.sampleRadius(), self.sampleAngle())
 
     '''
     returns random radius
@@ -53,7 +54,7 @@ class HyperBolicGraphSimulation:
     returns random angle
     '''
     def sampleAngle(self):
-        return self.uniformSampler.rvs() * (2*np.pi)
+        return self.uniformSampler.rvs() * 2* np.pi
 
     '''
     returns hyperbolic distance between two points
@@ -64,7 +65,7 @@ class HyperBolicGraphSimulation:
         return np.arccosh(np.cosh(p1[0])*np.cosh(p2[0]) - np.sinh(p1[0])*np.sinh(p2[0])* np.cos(dist_ang))
 
     '''
-    converst polar coordinates to euclidian coordinates
+    convert polar coordinates to euclidian coordinates
     '''
     def convertPolarToEuclidian(self, p):
         #p= (r, angle)

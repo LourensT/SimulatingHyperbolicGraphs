@@ -3,7 +3,7 @@ Python simulation for generating hyperbolic graphs.
 
 Great video for understanding hyperbolic random graphs: https://www.youtube.com/watch?v=JfqC-e6JsVk
 
-##Installation
+## Dependencies
 python package network2tikz is used:
 `pip install network2tikz`
 

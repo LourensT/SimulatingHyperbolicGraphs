@@ -9,11 +9,11 @@ import datetime
 
 class HyperBolicGraphSimulation:
 
-    def __init__(self, average_degrees, number_of_points, negative_curvature):
+    def __init__(self, average_degrees, negative_curvature):
         self.v = average_degrees
         self.a = negative_curvature
-        self.uniformSampler = Distribution(stats.uniform())
-        #self.uniformSampler = stats.uniform()
+        #bulkwise sampler is quicker then sampling one by one
+        self.uniformSampler = Distribution(stats.uniform()) 
 
     def generateGraph(self, n):
         self.R = 2*np.log(n/self.v)
@@ -112,6 +112,6 @@ class HyperBolicGraphSimulation:
 
 if __name__ == "__main__":
     style = ["\SetVertexStyle[MinSize=0.3\DefaultUnit, LineWidth=0pt, FillColor=vertexfill]\n", "\SetEdgeStyle[LineWidth=0.25pt]\n"]
-    simulator = HyperBolicGraphSimulation(1, 30, 0.6)
+    simulator = HyperBolicGraphSimulation(1, 0.6)
     simulator.generateGraph(250)
     simulator.draw(style=style)

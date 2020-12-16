@@ -5,6 +5,7 @@ import itertools
 import networkx as nx
 import network2tikz
 import matplotlib.pyplot as plt
+import datetime
 
 class HyperBolicGraphSimulation:
 
@@ -28,8 +29,6 @@ class HyperBolicGraphSimulation:
             p2 = self.pointsPositions[pair[1]]
             if self.calculateDistance(p1, p2) <= self.R:
                 self.G.add_edge(pair[0], pair[1])
-        # 
-        self.drawGraph()
 
     '''
     returns given size of random random points
@@ -76,14 +75,43 @@ class HyperBolicGraphSimulation:
     '''
     output to tex and display graph
     '''
-    def drawGraph(self, fp="output.tex"):
+    def draw(self, fp="", style=""):
+        #get default filepath
+        if fp == "":
+            fp = datetime.datetime.now().strftime("%Hh%Mm%Ss %d-%m-%Y") +".tex"
+        
+        #get the positions of all nodes in euclidian coordinates
         layout = {k : self.convertPolarToEuclidian(self.pointsPositions[k]) for k in self.pointsPositions.keys()}
+        #convert the network to tikz
+        network2tikz.plot(self.G, fp, layout=layout, canvas=(10,10))
+        self.addStyleString(fp, style)
+
+        #display the matplotlib view of the graph
         nx.draw(self.G, pos=layout)
-        network2tikz.plot(self.G, fp, layout=layout)
         plt.grid(True)
         plt.show()
 
+    '''
+    add the given style options to the output.tex at appropriate place
+    '''
+    def addStyleString(self, fp, style):
+
+        #read in the output file and interlace the styling options
+        allLines = []
+        with open(fp, "r") as f:
+            for line in f:
+                allLines.append(line)
+                if "begin{tikzpicture}" in line:
+                    for style_line in style:
+                        allLines.append(style_line)
+
+        #output the file again
+        with open(fp, "w") as f:
+            for line in allLines:
+                f.write(line)   
 
 if __name__ == "__main__":
-    simulator = HyperBolicGraphSimulation(1, 30, 1)
-    simulator.generateGraph(1000)
+    style = ["\SetVertexStyle[MinSize=0.3\DefaultUnit, LineWidth=0pt, FillColor=vertexfill]\n", "\SetEdgeStyle[LineWidth=0.25pt]\n"]
+    simulator = HyperBolicGraphSimulation(1, 30, 0.6)
+    simulator.generateGraph(250)
+    simulator.draw(style=style)

@@ -7,8 +7,9 @@ import network2tikz
 import matplotlib.pyplot as plt
 import datetime
 import os
+import tikzplotlib as plt2tikz
 
-class HyperBolicGraphSimulation:
+class HyperbolicGraphSimulation:
 
     def __init__(self):
         #bulkwise sampler is quicker then sampling one by one
@@ -126,19 +127,20 @@ class HyperBolicGraphSimulation:
 
         #remove original .tex file
         os.remove(self.dir+fp.replace('.tikz', '.tex'))   
-
-if __name__ == "__main__":
-    style = ["\SetVertexStyle[MinSize=0.3\DefaultUnit, LineWidth=0pt, FillColor=mycolor1]\n", "\SetEdgeStyle[LineWidth=0.25pt]\n"]
-    simulator = HyperBolicGraphSimulation()
-    simulator.setOutputFolder(os.getcwd()+ "//output_batch_1//" )
-
-    nrOfPoints = 250
-    avg_degrees = [0.5, 1, 1.5, 2, 2.5, 3, 3.5]
-    neg_curvature = [0.2, 0.6, 0.8, 1, 1.2, 1.4, 1.6]
-
-    for combination in itertools.product(avg_degrees, neg_curvature):
-        filepath = "n{}_v{}_a{}.tikz".format(nrOfPoints, str(combination[0]).replace(".", ","), str(combination[1]).replace(".", ","))
-        print(filepath)
     
-        simulator.generateGraph(nrOfPoints, combination[0], combination[1])    
-        simulator.draw(style=style, fp=filepath)
+    def saveDegreeDistribution(self, fp, show=False):
+        print("Saving: " + fp)
+        degrees = [self.G.degree(n) for n in self.G.nodes()]
+        degrees.sort()
+        total = sum(degrees)
+        #total
+        cumulative = [sum(degrees[n::])/total for n in range(len(degrees))]
+        #nrOfNodes = len(degrees)
+        #ecdf = [i/nrOfNodes for i in range(1,nrOfNodes+1)]
+        
+        plt.loglog(degrees, cumulative)
+        plt2tikz.save(self.dir+fp)
+        if show:
+            plt.show()
+        
+        plt.clf() 

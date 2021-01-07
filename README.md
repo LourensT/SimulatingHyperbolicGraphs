@@ -7,6 +7,9 @@ Great video for understanding hyperbolic random graphs: https://www.youtube.com/
 python package network2tikz is used:
 `pip install network2tikz`
 
+and tikzplotlib:
+`pip install tikzplotlib`
+
 the latex output depends on tikz-network, download the .sty here: https://mirror.lyrahosting.com/CTAN/graphics/pgf/contrib/tikz-network/tikz-network.sty
 
 ## Setting
@@ -28,6 +31,9 @@ Consider a Hyperbolic Random Graph with parameters alpha, v, n. Here n is number
 
 ## Expected Results
 for a vertex at radius r_i, we expect it's degree to be around e^(R-r_i)/2 (exp value of poisson distr. of its type.)
+
+## How To Use
+See the `ExampleUsage.py` for straightforward implementation.
 
 ## Example Output
 Using v (averagedegrees) = 1, n (number of nodes) = 250, alpha (negative curvature) = 0.6, we obtain the following random graph:

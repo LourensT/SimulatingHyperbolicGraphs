@@ -154,8 +154,7 @@ class HyperbolicGraphSimulation:
                 
         plt.loglog(index, freq)
 
-        if dump:
-            plt2tikz.save(self.dir+fp) #output
+        plt2tikz.save(self.dir+fp) #output
 
         if show:
             plt.show()

@@ -6,7 +6,7 @@ style = ["\SetVertexStyle[MinSize=0.3\DefaultUnit, LineWidth=0pt, FillColor=myco
 
 #set up simulator
 simulator = HyperbolicGraphSimulation()
-simulator.setOutputFolder(os.getcwd()+ "//output_batch_2//" )
+simulator.setOutputFolder(os.getcwd()+ "//output_batch_3//" )
 
 #parameters combinates
 nrOfPoints = 250

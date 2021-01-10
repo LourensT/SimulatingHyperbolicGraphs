@@ -128,19 +128,36 @@ class HyperbolicGraphSimulation:
         #remove original .tex file
         os.remove(self.dir+fp.replace('.tikz', '.tex'))   
     
+    '''
+    saves the degree distribution of the currently generated graph
+
+    parameters: 
+    fp: filepath to save file to
+    show: whether to display the plot on screen
+    '''
     def saveDegreeDistribution(self, fp, show=False):
         print("Saving: " + fp)
+        assert ".tikz" in fp, "filepath does not end in .tikz"
+
         degrees = [self.G.degree(n) for n in self.G.nodes()]
         degrees.sort()
         total = sum(degrees)
-        #total
         cumulative = [sum(degrees[n::])/total for n in range(len(degrees))]
-        #nrOfNodes = len(degrees)
-        #ecdf = [i/nrOfNodes for i in range(1,nrOfNodes+1)]
-        
-        plt.loglog(degrees, cumulative)
-        plt2tikz.save(self.dir+fp)
+        prev = degrees[0]
+        index = [prev]
+        freq = [cumulative[0]]
+        for i in range(1, len(degrees)):
+            if not (degrees[i] == prev):
+                prev = degrees[i]
+                index.append(degrees[i])
+                freq.append(cumulative[i])
+                
+        plt.loglog(index, freq)
+
+        if dump:
+            plt2tikz.save(self.dir+fp) #output
+
         if show:
             plt.show()
         
-        plt.clf() 
+        plt.clf() #clear plot
